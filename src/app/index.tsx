@@ -1,98 +1,215 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
+import { useFocusEffect, useRouter } from 'expo-router';
+import React, { useCallback, useState } from 'react';
+import {
+  FlatList,
+  RefreshControl,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { DevControlsModal } from '@/components/notices/DevControlsModal';
+import {
+  ListEmptyState,
+  ListFooterLoader,
+  ListPaginationError,
+  LoadingSkeleton,
+  ScreenErrorState,
+} from '@/components/notices/ListStates';
+import { NoticeCard } from '@/components/notices/NoticeCard';
+import { NoticeCategoryFilter } from '@/components/notices/NoticeCategoryFilter';
+import { StaleBanner } from '@/components/notices/StaleBanner';
+import { useNotices } from '@/hooks/useNotices';
+import { Notice } from '@/types/notice';
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+export default function NoticesListScreen() {
+  const router = useRouter();
+  const [isDevModalVisible, setIsDevModalVisible] = useState(false);
 
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
+  const {
+    notices,
+    category,
+    setCategory,
+    isLoading,
+    isRefreshing,
+    isLoadingMore,
+    hasMore,
+    error,
+    paginationError,
+    isStale,
+    readIds,
+    isRead,
+    refresh,
+    loadMore,
+    simulateFailures,
+    toggleSimulateFailures,
+    clearReadNotices,
+    markAsRead,
+    refreshReadIds,
+  } = useNotices();
+
+  // Re-sync read notices when returning to this screen
+  useFocusEffect(
+    useCallback(() => {
+      refreshReadIds();
+    }, [refreshReadIds])
   );
-}
 
-export default function HomeScreen() {
+  const handleOpenNotice = (notice: Notice) => {
+    markAsRead(notice.id);
+    router.push({
+      pathname: '/notice/[id]',
+      params: { id: notice.id },
+    });
+  };
+
   return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+    <SafeAreaView style={styles.container}>
+      {/* Top App Bar with Title & Dev Controls */}
+      <View style={styles.topHeader}>
+        <View>
+          <Text style={styles.brandTitle}>Melyn Community</Text>
+          <Text style={styles.brandSubtitle}>Notices & Announcements</Text>
+        </View>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={() => setIsDevModalVisible(true)}
+          style={[styles.devControlsBtn, simulateFailures && styles.devControlsBtnAlert]}>
+          <Text style={styles.devControlsBtnText}>
+            {simulateFailures ? '⚠️ 1/5 Failures ON' : '⚙️ Dev Controls'}
+          </Text>
+        </TouchableOpacity>
+      </View>
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
+      {/* Category Filter Chips */}
+      <NoticeCategoryFilter
+        selectedCategory={category}
+        onSelectCategory={(cat) => setCategory(cat)}
+      />
 
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
+      {/* Offline / Stale Data Banner */}
+      {isStale && <StaleBanner onRetry={refresh} isRetrying={isRefreshing} />}
 
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+      {/* Main List Content */}
+      {isLoading ? (
+        <LoadingSkeleton />
+      ) : error && notices.length === 0 ? (
+        <ScreenErrorState message={error} onRetry={refresh} isRetrying={isRefreshing} />
+      ) : (
+        <FlatList
+          data={notices}
+          extraData={readIds}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <NoticeCard
+              notice={item}
+              isRead={isRead(item.id)}
+              onPress={() => handleOpenNotice(item)}
+            />
+          )}
+          contentContainerStyle={styles.listContent}
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={refresh}
+              colors={['#1E293B']}
+              tintColor="#1E293B"
+            />
+          }
+          onEndReached={loadMore}
+          onEndReachedThreshold={0.3}
+          ListEmptyComponent={
+            <ListEmptyState
+              category={category}
+              onResetFilter={category !== 'all' ? () => setCategory('all') : undefined}
+            />
+          }
+          ListFooterComponent={
+            paginationError ? (
+              <ListPaginationError
+                error={paginationError}
+                onRetry={loadMore}
+                isLoading={isLoadingMore}
+              />
+            ) : isLoadingMore ? (
+              <ListFooterLoader />
+            ) : !hasMore && notices.length > 0 ? (
+              <View style={styles.endOfListContainer}>
+                <Text style={styles.endOfListText}>You have viewed all {notices.length} notices</Text>
+              </View>
+            ) : null
+          }
+        />
+      )}
+
+      {/* Developer / Reviewer Controls Modal */}
+      <DevControlsModal
+        visible={isDevModalVisible}
+        onClose={() => setIsDevModalVisible(false)}
+        simulateFailures={simulateFailures}
+        onToggleSimulateFailures={toggleSimulateFailures}
+        onClearReadNotices={clearReadNotices}
+        readCount={readIds.size}
+      />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    backgroundColor: '#F8FAFC',
+  },
+  topHeader: {
     flexDirection: 'row',
-  },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
+    justifyContent: 'space-between',
     alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
+    paddingHorizontal: 16,
+    paddingTop: 12,
+    paddingBottom: 8,
+    backgroundColor: '#FFFFFF',
   },
-  heroSection: {
+  brandTitle: {
+    fontSize: 20,
+    fontWeight: '800',
+    color: '#0F172A',
+    letterSpacing: -0.3,
+  },
+  brandSubtitle: {
+    fontSize: 12,
+    color: '#64748B',
+    fontWeight: '500',
+  },
+  devControlsBtn: {
+    backgroundColor: '#F1F5F9',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+  },
+  devControlsBtnAlert: {
+    backgroundColor: '#FEF2F2',
+    borderColor: '#FCA5A5',
+  },
+  devControlsBtnText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#334155',
+  },
+  listContent: {
+    paddingVertical: 10,
+    flexGrow: 1,
+  },
+  endOfListContainer: {
+    paddingVertical: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
   },
-  title: {
-    textAlign: 'center',
-  },
-  code: {
-    textTransform: 'uppercase',
-  },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+  endOfListText: {
+    fontSize: 12,
+    color: '#94A3B8',
+    fontWeight: '500',
   },
 });
