@@ -1,6 +1,37 @@
 # Melyn Community Notices Mobile App
 
+
 A React Native & Expo mobile application built for First Nations community members to stay informed with emergency alerts, events, service announcements, and general community updates.
+
+---
+
+## 📱 App Demo Video
+
+https://github.com/user-attachments/assets/demo.mp4
+
+> **Watch the full walkthrough below** *(Click play to watch the recording or view [assets/demo.mp4](assets/demo.mp4))*:
+
+<div align="center">
+  <video src="assets/demo.mp4" controls width="100%" style="max-height: 640px; border-radius: 12px; box-shadow: 0 4px 14px rgba(0,0,0,0.15);">
+    <p>Your browser does not support HTML5 video. <a href="assets/demo.mp4">Click here to download and view the demo video</a>.</p>
+  </video>
+</div>
+
+<p align="center">
+  <a href="assets/demo.mp4">▶️ <b>Direct Video Link (assets/demo.mp4)</b></a>
+</p>
+
+### What's Showcased in the Demo:
+1. **Interactive Category Filtering**: Instant filtering across *Emergency*, *Events*, *Services*, and *All Notices*.
+2. **Infinite Scrolling & Pagination**: Smooth loading of subsequent pages with simulated 500ms network delay.
+3. **Edge Case Handling**:
+   - **Very Long Title (`ntc_0004`)**: Truncated cleanly to 3 lines on list card with full rendering in detail view.
+   - **Upcoming Scheduled Notice (`ntc_0020`)**: Hero image rendering with amber `Upcoming Notice` badge.
+   - **Empty Notice Body (`ntc_0008`)**: Graceful custom fallback card instead of a blank space.
+   - **Expired Notice (`ntc_0012`)**: Dimmed styling and archival warning banner.
+   - **Broken Image Link (`ntc_0016`)**: Graceful fallback placeholder graphic without crashes.
+4. **Persistent Read Status**: Notices transition from `NEW` to `Read` and persist in `AsyncStorage`.
+5. **Developer Controls Modal**: In-app toggling of the 1-in-5 failure simulation and read status reset.
 
 ---
 

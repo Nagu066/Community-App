@@ -1,4 +1,3 @@
-import { Feather } from '@expo/vector-icons';
 import { NoticeImage } from '@/components/notices/NoticeImage';
 import { ScreenHeader } from '@/components/ui/ScreenHeader';
 import { useNoticeDetail } from '@/hooks/useNoticeDetail';
@@ -8,6 +7,7 @@ import {
   isNoticeExpired,
   isNoticeFuture,
 } from '@/utils/noticeUtils';
+import { Feather } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import {
   ActivityIndicator,
@@ -415,7 +415,7 @@ const styles = StyleSheet.create({
   },
   bodyText: {
     fontSize: 16,
-    lineHeight: 25,
+    lineHeight: 20,
     color: '#1E293B',
   },
   emptyBodyCard: {
