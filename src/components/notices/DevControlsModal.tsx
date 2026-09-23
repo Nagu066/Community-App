@@ -1,3 +1,4 @@
+import { Feather } from '@expo/vector-icons';
 import React from 'react';
 import {
   Modal,
@@ -33,9 +34,12 @@ export const DevControlsModal: React.FC<DevControlsModalProps> = ({
           <TouchableWithoutFeedback>
             <View style={styles.card}>
               <View style={styles.header}>
-                <Text style={styles.title}>🛠️ Developer / Reviewer Controls</Text>
+                <View style={styles.headerTitleRow}>
+                  <Feather name="sliders" size={16} color="#0F172A" style={{ marginRight: 8 }} />
+                  <Text style={styles.title}>Developer Controls</Text>
+                </View>
                 <TouchableOpacity onPress={onClose} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-                  <Text style={styles.closeButton}>✕</Text>
+                  <Feather name="x" size={18} color="#64748B" />
                 </TouchableOpacity>
               </View>
 
@@ -117,6 +121,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 6,
+  },
+  headerTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   title: {
     fontSize: 16,

@@ -1,3 +1,4 @@
+import { Feather } from '@expo/vector-icons';
 import { useFocusEffect, useRouter } from 'expo-router';
 import React, { useCallback, useState } from 'react';
 import {
@@ -76,8 +77,14 @@ export default function NoticesListScreen() {
           activeOpacity={0.7}
           onPress={() => setIsDevModalVisible(true)}
           style={[styles.devControlsBtn, simulateFailures && styles.devControlsBtnAlert]}>
-          <Text style={styles.devControlsBtnText}>
-            {simulateFailures ? '⚠️ 1/5 Failures ON' : '⚙️ Dev Controls'}
+          <Feather
+            name="sliders"
+            size={12}
+            color={simulateFailures ? '#DC2626' : '#475569'}
+            style={{ marginRight: 5 }}
+          />
+          <Text style={[styles.devControlsBtnText, simulateFailures && styles.devControlsBtnTextAlert]}>
+            {simulateFailures ? '1/5 Failures' : 'Controls'}
           </Text>
         </TouchableOpacity>
       </View>
@@ -182,6 +189,8 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   devControlsBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#F1F5F9',
     paddingHorizontal: 10,
     paddingVertical: 6,
@@ -197,6 +206,9 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: '700',
     color: '#334155',
+  },
+  devControlsBtnTextAlert: {
+    color: '#DC2626',
   },
   listContent: {
     paddingVertical: 10,

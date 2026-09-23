@@ -1,3 +1,4 @@
+import { Feather } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Notice } from '@/types/notice';
@@ -29,7 +30,7 @@ export const NoticeCard: React.FC<NoticeCardProps> = ({ notice, isRead, onPress 
       {/* High Priority Alert Header */}
       {isHighPriority && (
         <View style={styles.highPriorityHeader}>
-          <Text style={styles.highPriorityIcon}>⚠️</Text>
+          <Feather name="alert-triangle" size={13} color="#DC2626" style={{ marginRight: 6 }} />
           <Text style={styles.highPriorityLabel}>HIGH PRIORITY ALERT</Text>
         </View>
       )}
@@ -43,6 +44,12 @@ export const NoticeCard: React.FC<NoticeCardProps> = ({ notice, isRead, onPress 
                 styles.categoryBadge,
                 { backgroundColor: categoryConfig.bg, borderColor: categoryConfig.border },
               ]}>
+              <Feather
+                name={categoryConfig.icon}
+                size={11}
+                color={categoryConfig.text}
+                style={{ marginRight: 4 }}
+              />
               <Text style={[styles.categoryBadgeText, { color: categoryConfig.text }]}>
                 {categoryConfig.label}
               </Text>
@@ -50,12 +57,14 @@ export const NoticeCard: React.FC<NoticeCardProps> = ({ notice, isRead, onPress 
 
             {isExpired && (
               <View style={styles.expiredBadge}>
+                <Feather name="clock" size={10} color="#64748B" style={{ marginRight: 3 }} />
                 <Text style={styles.expiredBadgeText}>Expired</Text>
               </View>
             )}
 
             {isFuture && (
               <View style={styles.futureBadge}>
+                <Feather name="calendar" size={10} color="#B45309" style={{ marginRight: 3 }} />
                 <Text style={styles.futureBadgeText}>Upcoming</Text>
               </View>
             )}
@@ -72,7 +81,7 @@ export const NoticeCard: React.FC<NoticeCardProps> = ({ notice, isRead, onPress 
           )}
         </View>
 
-        {/* Content Row: Text + optional thumbnail */}
+        {/* Content Row: Text + thumbnail */}
         <View style={styles.bodyRow}>
           <View style={styles.textContainer}>
             {/* Title - gracefully handles very long titles */}
@@ -103,7 +112,10 @@ export const NoticeCard: React.FC<NoticeCardProps> = ({ notice, isRead, onPress 
           <Text style={styles.dateText}>
             {isFuture ? `Scheduled for: ${formatNoticeDate(notice.published_at)}` : formatNoticeDate(notice.published_at)}
           </Text>
-          <Text style={styles.viewMoreText}>View details →</Text>
+          <View style={styles.viewDetailsRow}>
+            <Text style={styles.viewMoreText}>View details</Text>
+            <Feather name="chevron-right" size={13} color="#2563EB" style={{ marginLeft: 2 }} />
+          </View>
         </View>
       </View>
     </TouchableOpacity>
@@ -173,6 +185,8 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   categoryBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 6,
@@ -183,6 +197,8 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   expiredBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#F1F5F9',
     borderColor: '#CBD5E1',
     borderWidth: 1,
@@ -196,6 +212,8 @@ const styles = StyleSheet.create({
     color: '#64748B',
   },
   futureBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#FEF3C7',
     borderColor: '#FDE68A',
     borderWidth: 1,
@@ -277,9 +295,13 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: '#94A3B8',
   },
+  viewDetailsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   viewMoreText: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#3B82F6',
+    color: '#2563EB',
   },
 });

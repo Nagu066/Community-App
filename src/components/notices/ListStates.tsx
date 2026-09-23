@@ -1,3 +1,4 @@
+import { Feather } from '@expo/vector-icons';
 import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
@@ -14,7 +15,10 @@ export const ListPaginationError: React.FC<ListPaginationErrorProps> = ({
 }) => {
   return (
     <View style={styles.paginationErrorContainer}>
-      <Text style={styles.paginationErrorText}>⚠️ {error}</Text>
+      <View style={styles.paginationErrorRow}>
+        <Feather name="alert-triangle" size={14} color="#DC2626" style={{ marginRight: 6 }} />
+        <Text style={styles.paginationErrorText}>{error}</Text>
+      </View>
       <TouchableOpacity
         activeOpacity={0.7}
         onPress={onRetry}
@@ -50,7 +54,7 @@ export const ListEmptyState: React.FC<ListEmptyStateProps> = ({
 }) => {
   return (
     <View style={styles.emptyContainer}>
-      <Text style={styles.emptyIcon}>📭</Text>
+      <Feather name="inbox" size={44} color="#94A3B8" style={{ marginBottom: 12 }} />
       <Text style={styles.emptyTitle}>No Notices Found</Text>
       <Text style={styles.emptySubtitle}>
         {category === 'all'
@@ -82,7 +86,7 @@ export const ScreenErrorState: React.FC<ScreenErrorStateProps> = ({
 }) => {
   return (
     <View style={styles.screenErrorContainer}>
-      <Text style={styles.screenErrorIcon}>⚡</Text>
+      <Feather name="wifi-off" size={44} color="#DC2626" style={{ marginBottom: 12 }} />
       <Text style={styles.screenErrorTitle}>Unable to Load Notices</Text>
       <Text style={styles.screenErrorSubtitle}>{message}</Text>
       <TouchableOpacity
@@ -130,6 +134,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#FECACA',
     gap: 8,
+  },
+  paginationErrorRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   paginationErrorText: {
     fontSize: 13,

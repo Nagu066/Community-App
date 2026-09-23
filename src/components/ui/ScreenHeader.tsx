@@ -1,3 +1,4 @@
+import { Feather } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -38,7 +39,7 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
             style={styles.backButton}
             accessibilityRole="button"
             accessibilityLabel="Go back">
-            <Text style={styles.backArrow}>‹</Text>
+            <Feather name="chevron-left" size={22} color="#0F172A" style={styles.backArrow} />
             <Text style={styles.backLabel}>Back</Text>
           </TouchableOpacity>
         )}
@@ -86,12 +87,7 @@ const styles = StyleSheet.create({
     paddingRight: 8,
   },
   backArrow: {
-    fontSize: 28,
-    lineHeight: 28,
-    color: '#0F172A',
-    fontWeight: '300',
     marginRight: 2,
-    marginTop: -2,
   },
   backLabel: {
     fontSize: 16,

@@ -1,3 +1,4 @@
+import { Feather } from '@expo/vector-icons';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { NoticeCategory } from '@/types/notice';
@@ -7,12 +8,20 @@ interface NoticeCategoryFilterProps {
   onSelectCategory: (category: NoticeCategory) => void;
 }
 
-const CATEGORIES: { key: NoticeCategory; label: string; icon?: string }[] = [
-  { key: 'all', label: 'All Notices' },
-  { key: 'emergency', label: 'Emergency', icon: '🚨' },
-  { key: 'event', label: 'Events', icon: '📅' },
-  { key: 'service', label: 'Services', icon: '🛠️' },
-  { key: 'general', label: 'General', icon: '📢' },
+type FeatherIconName = keyof typeof Feather.glyphMap;
+
+interface CategoryConfig {
+  key: NoticeCategory;
+  label: string;
+  iconName: FeatherIconName;
+}
+
+const CATEGORIES: CategoryConfig[] = [
+  { key: 'all', label: 'All Notices', iconName: 'layers' },
+  { key: 'emergency', label: 'Emergency', iconName: 'alert-triangle' },
+  { key: 'event', label: 'Events', iconName: 'calendar' },
+  { key: 'service', label: 'Services', iconName: 'tool' },
+  { key: 'general', label: 'General', iconName: 'bell' },
 ];
 
 export const NoticeCategoryFilter: React.FC<NoticeCategoryFilterProps> = ({
@@ -27,13 +36,20 @@ export const NoticeCategoryFilter: React.FC<NoticeCategoryFilterProps> = ({
         contentContainerStyle={styles.scrollContent}>
         {CATEGORIES.map((cat) => {
           const isSelected = selectedCategory === cat.key;
+          const iconColor = isSelected ? '#FFFFFF' : '#64748B';
+
           return (
             <TouchableOpacity
               key={cat.key}
               activeOpacity={0.7}
               onPress={() => onSelectCategory(cat.key)}
               style={[styles.chip, isSelected && styles.activeChip]}>
-              {cat.icon ? <Text style={styles.chipIcon}>{cat.icon}</Text> : null}
+              <Feather
+                name={cat.iconName}
+                size={13}
+                color={iconColor}
+                style={styles.chipIcon}
+              />
               <Text style={[styles.chipText, isSelected && styles.activeChipText]}>
                 {cat.label}
               </Text>
@@ -60,19 +76,23 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 7,
-    paddingHorizontal: 14,
+    paddingHorizontal: 13,
     borderRadius: 20,
-    backgroundColor: '#F1F5F9',
+    backgroundColor: '#F8FAFC',
     borderWidth: 1,
     borderColor: '#E2E8F0',
   },
   activeChip: {
-    backgroundColor: '#1E293B',
-    borderColor: '#1E293B',
+    backgroundColor: '#0F172A',
+    borderColor: '#0F172A',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 1,
   },
   chipIcon: {
     marginRight: 6,
-    fontSize: 13,
   },
   chipText: {
     fontSize: 13,
@@ -81,5 +101,6 @@ const styles = StyleSheet.create({
   },
   activeChipText: {
     color: '#FFFFFF',
+    fontWeight: '700',
   },
 });

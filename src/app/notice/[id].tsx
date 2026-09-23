@@ -1,3 +1,4 @@
+import { Feather } from '@expo/vector-icons';
 import { NoticeImage } from '@/components/notices/NoticeImage';
 import { ScreenHeader } from '@/components/ui/ScreenHeader';
 import { useNoticeDetail } from '@/hooks/useNoticeDetail';
@@ -40,7 +41,7 @@ export default function NoticeDetailScreen() {
       <SafeAreaView style={styles.container}>
         <ScreenHeader />
         <View style={styles.centerContainer}>
-          <Text style={styles.errorIcon}>⚠️</Text>
+          <Feather name="alert-circle" size={44} color="#DC2626" style={{ marginBottom: 12 }} />
           <Text style={styles.errorTitle}>Failed to Load Notice</Text>
           <Text style={styles.errorMessage}>{error || 'Notice not found.'}</Text>
           <View style={styles.errorActions}>
@@ -72,7 +73,7 @@ export default function NoticeDetailScreen() {
         {/* High priority notice alert banner */}
         {isHighPriority && (
           <View style={styles.highPriorityBanner}>
-            <Text style={styles.highPriorityBannerIcon}>🚨</Text>
+            <Feather name="alert-triangle" size={20} color="#DC2626" />
             <View style={styles.highPriorityTextContainer}>
               <Text style={styles.highPriorityBannerTitle}>HIGH PRIORITY COMMUNITY NOTICE</Text>
               <Text style={styles.highPriorityBannerSubtitle}>
@@ -85,7 +86,7 @@ export default function NoticeDetailScreen() {
         {/* Expired Notice Warning Banner */}
         {isExpired && (
           <View style={styles.expiredBanner}>
-            <Text style={styles.expiredBannerIcon}>⏳</Text>
+            <Feather name="clock" size={14} color="#64748B" />
             <Text style={styles.expiredBannerText}>
               This notice has expired and is kept for historical community records.
             </Text>
@@ -111,6 +112,12 @@ export default function NoticeDetailScreen() {
                 styles.categoryBadge,
                 { backgroundColor: categoryConfig.bg, borderColor: categoryConfig.border },
               ]}>
+              <Feather
+                name={categoryConfig.icon}
+                size={12}
+                color={categoryConfig.text}
+                style={{ marginRight: 4 }}
+              />
               <Text style={[styles.categoryBadgeText, { color: categoryConfig.text }]}>
                 {categoryConfig.label}
               </Text>
@@ -118,12 +125,14 @@ export default function NoticeDetailScreen() {
 
             {isFuture && (
               <View style={styles.futureBadge}>
+                <Feather name="calendar" size={11} color="#B45309" style={{ marginRight: 4 }} />
                 <Text style={styles.futureBadgeText}>Upcoming Notice</Text>
               </View>
             )}
 
             <View style={styles.readConfirmedBadge}>
-              <Text style={styles.readConfirmedText}>✓ Read</Text>
+              <Feather name="check" size={12} color="#16A34A" style={{ marginRight: 4 }} />
+              <Text style={styles.readConfirmedText}>Read</Text>
             </View>
           </View>
 
@@ -164,7 +173,7 @@ export default function NoticeDetailScreen() {
           {hasEmptyBody ? (
             /* Edge case: empty body */
             <View style={styles.emptyBodyCard}>
-              <Text style={styles.emptyBodyIcon}>ℹ️</Text>
+              <Feather name="info" size={24} color="#64748B" style={{ marginBottom: 6 }} />
               <Text style={styles.emptyBodyTitle}>No Additional Body Content Provided</Text>
               <Text style={styles.emptyBodyText}>
                 The {notice.department} did not include additional written details for this notice.
@@ -311,6 +320,8 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   categoryBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 6,
@@ -321,6 +332,8 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   futureBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#FEF3C7',
     borderColor: '#FDE68A',
     borderWidth: 1,
@@ -334,6 +347,8 @@ const styles = StyleSheet.create({
     color: '#B45309',
   },
   readConfirmedBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#F0FDF4',
     borderColor: '#BBF7D0',
     borderWidth: 1,

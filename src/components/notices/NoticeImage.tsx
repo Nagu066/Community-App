@@ -1,3 +1,4 @@
+import { Feather } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import React, { useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
@@ -12,13 +13,15 @@ interface NoticeImageProps {
   isThumbnail?: boolean;
 }
 
+type FeatherIconName = keyof typeof Feather.glyphMap;
+
 const CATEGORY_STYLES: Record<
   string,
   {
     bg: string;
     border: string;
     badgeBg: string;
-    icon: string;
+    icon: FeatherIconName;
     title: string;
     sub: string;
     badgeText: string;
@@ -28,7 +31,7 @@ const CATEGORY_STYLES: Record<
     bg: '#7F1D1D',
     border: '#EF4444',
     badgeBg: '#DC2626',
-    icon: '🚨',
+    icon: 'alert-triangle',
     title: 'EMERGENCY ALERT',
     sub: 'Community Safety Notice',
     badgeText: 'EMERGENCY',
@@ -37,7 +40,7 @@ const CATEGORY_STYLES: Record<
     bg: '#4C1D95',
     border: '#8B5CF6',
     badgeBg: '#7C3AED',
-    icon: '📅',
+    icon: 'calendar',
     title: 'COMMUNITY EVENT',
     sub: 'Gatherings & Recreation',
     badgeText: 'EVENT',
@@ -46,7 +49,7 @@ const CATEGORY_STYLES: Record<
     bg: '#0C4A6E',
     border: '#0284C7',
     badgeBg: '#0369A1',
-    icon: '🛠️',
+    icon: 'tool',
     title: 'COMMUNITY SERVICE',
     sub: 'Health, Facilities & Maintenance',
     badgeText: 'SERVICE',
@@ -55,7 +58,7 @@ const CATEGORY_STYLES: Record<
     bg: '#0F172A',
     border: '#475569',
     badgeBg: '#334155',
-    icon: '📢',
+    icon: 'bell',
     title: 'GENERAL NOTICE',
     sub: 'Administration & Community Updates',
     badgeText: 'GENERAL',
@@ -94,7 +97,7 @@ export const NoticeImage: React.FC<NoticeImageProps> = ({
             },
           ]}>
           <View style={[styles.thumbBadge, { backgroundColor: theme.badgeBg }]}>
-            <Text style={styles.thumbIcon}>{theme.icon}</Text>
+            <Feather name={theme.icon} size={16} color="#FFFFFF" />
           </View>
           <Text numberOfLines={1} style={styles.thumbText}>
             {theme.badgeText}
@@ -122,7 +125,7 @@ export const NoticeImage: React.FC<NoticeImageProps> = ({
 
         {/* Center content */}
         <View style={[styles.heroIconBadge, { backgroundColor: theme.badgeBg }]}>
-          <Text style={styles.heroIcon}>{theme.icon}</Text>
+          <Feather name={theme.icon} size={28} color="#FFFFFF" />
         </View>
         <Text style={styles.heroTitle}>{theme.title}</Text>
         <Text style={styles.heroSubtitle}>{theme.sub}</Text>

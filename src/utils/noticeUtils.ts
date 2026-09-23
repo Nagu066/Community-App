@@ -1,3 +1,4 @@
+import { Feather } from '@expo/vector-icons';
 import { Notice } from '@/types/notice';
 
 /**
@@ -37,35 +38,41 @@ export function isNoticeFuture(notice: Notice): boolean {
   return !isNaN(published) && published > Date.now();
 }
 
+export type FeatherIconName = keyof typeof Feather.glyphMap;
+
 /**
- * Category colors for visual tagging.
+ * Refined category colors & vector icon mapping for a clean, premium feel.
  */
 export const CATEGORY_COLORS: Record<
   string,
-  { bg: string; text: string; border: string; label: string }
+  { bg: string; text: string; border: string; label: string; icon: FeatherIconName }
 > = {
   emergency: {
-    bg: '#FEE2E2',
+    bg: '#FEF2F2',
     text: '#DC2626',
     border: '#FECACA',
     label: 'Emergency',
+    icon: 'alert-triangle',
   },
   event: {
-    bg: '#EDE9FE',
+    bg: '#F5F3FF',
     text: '#7C3AED',
     border: '#DDD6FE',
     label: 'Event',
+    icon: 'calendar',
   },
   service: {
-    bg: '#E0F2FE',
+    bg: '#F0F9FF',
     text: '#0284C7',
     border: '#BAE6FD',
     label: 'Service',
+    icon: 'tool',
   },
   general: {
-    bg: '#F1F5F9',
+    bg: '#F8FAFC',
     text: '#475569',
     border: '#E2E8F0',
     label: 'General',
+    icon: 'bell',
   },
 };

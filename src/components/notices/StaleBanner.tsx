@@ -1,3 +1,4 @@
+import { Feather } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
@@ -10,7 +11,7 @@ export const StaleBanner: React.FC<StaleBannerProps> = ({ onRetry, isRetrying })
   return (
     <View style={styles.container}>
       <View style={styles.iconContainer}>
-        <Text style={styles.icon}>📡</Text>
+        <Feather name="wifi-off" size={17} color="#92400E" />
       </View>
       <View style={styles.textContainer}>
         <Text style={styles.title}>Offline Mode / Stale Notices</Text>
