@@ -92,18 +92,16 @@ export default function NoticeDetailScreen() {
           </View>
         )}
 
-        {/* Featured Image (or graceful placeholder if broken/loading) */}
-        {notice.image_url ? (
-          <View style={styles.imageContainer}>
-            <NoticeImage
-              uri={notice.image_url}
-              aspectRatio={16 / 9}
-              borderRadius={12}
-              category={notice.category}
-              showFallbackOnMissing={false}
-            />
-          </View>
-        ) : null}
+        {/* Featured Image or Category Fallback Banner */}
+        <View style={styles.imageContainer}>
+          <NoticeImage
+            uri={notice.image_url}
+            aspectRatio={16 / 9}
+            borderRadius={12}
+            category={notice.category}
+            isThumbnail={false}
+          />
+        </View>
 
         {/* Header Metadata */}
         <View style={styles.contentHeader}>

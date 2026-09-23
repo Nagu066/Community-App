@@ -86,18 +86,16 @@ export const NoticeCard: React.FC<NoticeCardProps> = ({ notice, isRead, onPress 
             <Text style={styles.departmentText}>{notice.department}</Text>
           </View>
 
-          {notice.image_url ? (
-            <View style={styles.thumbnailContainer}>
-              <NoticeImage
-                uri={notice.image_url}
-                height={68}
-                width={68}
-                borderRadius={8}
-                category={notice.category}
-                showFallbackOnMissing={false}
-              />
-            </View>
-          ) : null}
+          <View style={styles.thumbnailContainer}>
+            <NoticeImage
+              uri={notice.image_url}
+              height={68}
+              width={68}
+              borderRadius={8}
+              category={notice.category}
+              isThumbnail={true}
+            />
+          </View>
         </View>
 
         {/* Footer: Date and details hint */}
