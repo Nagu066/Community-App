@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
 import { ApiConfig, fetchNotices } from '@/services/api/noticesApi';
 import { NoticeStorage } from '@/services/storage/noticeStorage';
 import { Notice, NoticeCategory } from '@/types/notice';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export function useNotices() {
   const [notices, setNotices] = useState<Notice[]>([]);

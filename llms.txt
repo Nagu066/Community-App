@@ -1,0 +1,18 @@
+# Melyn Community Notices Mobile App
+
+> A React Native & Expo application built for First Nations community members to access emergency notices, events, services, and community updates.
+
+## Technical & Architectural Overview
+- Full Project Specification & AI Context: [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md)
+- App Readme & Demo Video: [README.md](README.md)
+- Package Manifest & Dependencies: [package.json](package.json)
+
+## Core Codebase Structure
+- Feed Screen: `src/app/index.tsx`
+- Detail Screen: `src/app/notice/[id].tsx`
+- Feed State Hook: `src/hooks/useNotices.ts`
+- Detail State Hook: `src/hooks/useNoticeDetail.ts`
+- Mock API Layer: `src/services/api/noticesApi.ts`
+- Local Persistence Layer: `src/services/storage/noticeStorage.ts`
+- Types & Interfaces: `src/types/notice.ts`
+- UI Components: `src/components/notices/`

@@ -1,15 +1,3 @@
-import { Feather } from '@expo/vector-icons';
-import { useFocusEffect, useRouter } from 'expo-router';
-import React, { useCallback, useState } from 'react';
-import {
-  FlatList,
-  RefreshControl,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { DevControlsModal } from '@/components/notices/DevControlsModal';
 import {
   ListEmptyState,
@@ -23,6 +11,18 @@ import { NoticeCategoryFilter } from '@/components/notices/NoticeCategoryFilter'
 import { StaleBanner } from '@/components/notices/StaleBanner';
 import { useNotices } from '@/hooks/useNotices';
 import { Notice } from '@/types/notice';
+import { Feather } from '@expo/vector-icons';
+import { useFocusEffect, useRouter } from 'expo-router';
+import { useCallback, useState } from 'react';
+import {
+  FlatList,
+  RefreshControl,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function NoticesListScreen() {
   const router = useRouter();
